@@ -3,19 +3,837 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>My Site</title>
+  <title>Los Angeles Dodgers Spotlight</title>
   <style>
-    body { font-family: 'Segoe UI', Verdana, sans-serif; margin: 0; background: #f4f4f9; color: #222; }
-    main { max-width: 720px; margin: 4rem auto; padding: 2rem; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(15, 23, 42, .08); }
-    h1 { margin-top: 0; }
-    p { line-height: 1.6; }
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", "Noto Sans JP", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f8f9fb;
+      color: #0b1220;
+      min-height: 100vh;
+    }
+    main {
+      padding: 3rem 1.5rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero {
+      display: grid;
+      gap: 1.5rem;
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      box-shadow: 0 20px 50px rgba(15, 23, 42, .08);
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 3.2vw, 3.2rem);
+      margin: 0;
+      letter-spacing: .02em;
+      line-height: 1.12;
+    }
+    .hero p {
+      margin: 1rem 0 0;
+      line-height: 1.7;
+    }
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .25rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      background: #e0e7ff;
+      font-size: .95rem;
+      font-weight: 600;
+      color: #0c1c5f;
+    }
+    .hero__badge span {
+      font-size: 1.1rem;
+    }
+    .hero__lead {
+      color: #dbe9ff;
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .grid {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+    .panel {
+      background: #0b1220;
+      color: #f9fafb;
+      border: 1px solid rgba(11, 18, 32, 0.2);
+      border-radius: 18px;
+      padding: 1.75rem;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .panel h3 {
+      margin: 0 0 .5rem;
+      font-size: 1.2rem;
+    }
+    .panel p {
+      margin: 0;
+      line-height: 1.6;
+    }
+    .stats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .stat {
+      flex: 1;
+      min-width: 160px;
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.25rem 1rem;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+    }
+    .stat span {
+      display: block;
+      font-size: .9rem;
+      color: #9ab9ff;
+    }
+    .stat strong {
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+    .highlights {
+      margin-top: 3rem;
+    }
+    .highlights h2 {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: #0c1c5f;
+    }
+    .hero__cta {
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .8rem 1.4rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1ff3ff, #1a6bff);
+      color: #041026;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(26, 107, 255, 0.4);
+    }
+    .timeline {
+      margin-top: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+    .timeline__item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: .8rem;
+      font-size: .95rem;
+      align-items: center;
+    }
+    .roster {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.25rem;
+    }
+    .roster-card {
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 18px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: .65rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    }
+    .roster-card__header {
+      display: flex;
+      align-items: center;
+      gap: .95rem;
+    }
+    .roster-card__avatar {
+      width: 74px;
+      height: 74px;
+      border-radius: 16px;
+      overflow: hidden;
+      flex: none;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      background: radial-gradient(circle at 30% 25%, rgba(31, 243, 255, 0.8), rgba(26, 107, 255, 0.7));
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.1);
+    }
+    .roster-card__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .roster-card__meta {
+      min-width: 0;
+    }
+    .roster-card h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .roster-card span {
+      font-size: .85rem;
+      color: #9ab9ff;
+    }
+    .roster-card p {
+      margin: 0;
+      line-height: 1.5;
+    }
+    .timeline__item span {
+      color: #a4b9ff;
+      font-weight: 600;
+    }
+    .game {
+      margin-top: 3.25rem;
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    }
+    .game h2 {
+      margin: 0 0 .75rem;
+      font-size: 1.8rem;
+      color: #0c1c5f;
+    }
+    .game p {
+      margin: .35rem 0 0;
+      line-height: 1.6;
+      color: #273a5c;
+    }
+    .game__grid {
+      margin-top: 1.25rem;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+    .field {
+      background: radial-gradient(circle at 30% 25%, rgba(31, 243, 255, 0.25), rgba(26, 107, 255, 0.08));
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      border-radius: 18px;
+      padding: 1rem;
+      min-height: 260px;
+      position: relative;
+      overflow: hidden;
+    }
+    .strikezone {
+      width: min(420px, 100%);
+      height: 210px;
+      margin: 0 auto;
+      border-radius: 16px;
+      background: rgba(11, 18, 32, 0.92);
+      border: 1px solid rgba(11, 18, 32, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      position: relative;
+      --sweet-spot: 78%;
+    }
+    .plate {
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      width: 54px;
+      height: 30px;
+      background: rgba(249, 250, 251, 0.92);
+      clip-path: polygon(0 0, 100% 0, 78% 100%, 22% 100%);
+      opacity: 0.95;
+    }
+    .ball {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 35% 35%, #fff, #e5e7eb);
+      box-shadow: 0 10px 24px rgba(0,0,0,.25);
+      left: 50%;
+      top: 18px;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      will-change: left, top, opacity;
+    }
+    .ball--hit {
+      animation: ballHit 520ms ease-out forwards;
+    }
+    .ball--miss {
+      animation: ballMiss 420ms ease-out forwards;
+    }
+    @keyframes ballHit {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+      30%  { opacity: 1; transform: translate(-50%, -50%) scale(1.35); }
+      100% { opacity: 0; transform: translate(-50%, -160%) scale(0.9); filter: blur(1px); }
+    }
+    @keyframes ballMiss {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      60%  { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+      100% { opacity: 0; transform: translate(-50%, 50%) scale(0.9); }
+    }
+    .crosshair {
+      position: absolute;
+      left: 50%;
+      top: var(--sweet-spot);
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 2px;
+      background: rgba(31, 243, 255, 0.85);
+      box-shadow: 0 0 0 1px rgba(4,16,38,.35);
+      border-radius: 999px;
+    }
+    .crosshair::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 2px;
+      height: 80px;
+      background: rgba(31, 243, 255, 0.55);
+      border-radius: 999px;
+    }
+    .hud {
+      display: grid;
+      gap: .9rem;
+    }
+    .hud__card {
+      background: #0b1220;
+      color: #f9fafb;
+      border: 1px solid rgba(11, 18, 32, 0.2);
+      border-radius: 18px;
+      padding: 1.1rem;
+    }
+    .hud__row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: .95rem;
+      color: rgba(249, 250, 251, 0.92);
+    }
+    .hud__row strong {
+      color: #1ff3ff;
+    }
+    .controls {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: .9rem;
+    }
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      padding: .75rem 1rem;
+      border-radius: 12px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1ff3ff, #1a6bff);
+      color: #041026;
+      box-shadow: 0 10px 24px rgba(26, 107, 255, 0.25);
+    }
+    .btn--ghost {
+      background: #fff;
+      color: #0c1c5f;
+      border: 1px solid rgba(15, 23, 42, 0.14);
+      box-shadow: none;
+      font-weight: 700;
+    }
+    .status {
+      margin-top: .75rem;
+      font-weight: 700;
+      color: #0c1c5f;
+      min-height: 1.35em;
+    }
+    .timing {
+      margin-top: .85rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      height: 10px;
+      position: relative;
+    }
+    .timing__fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(31, 243, 255, 0.1), rgba(31, 243, 255, 0.95), rgba(26, 107, 255, 0.85));
+      transition: width 60ms linear;
+    }
+    .timing__sweet {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 78%;
+      width: 10%;
+      height: 100%;
+      background: rgba(31, 243, 255, 0.2);
+      box-shadow: inset 0 0 0 1px rgba(31, 243, 255, 0.25);
+    }
+    .hint {
+      font-size: .9rem;
+      color: #273a5c;
+      margin-top: .35rem;
+    }
+    footer {
+      margin-top: 4rem;
+      text-align: center;
+      color: #273a5c;
+      font-size: .85rem;
+    }
+    @media (max-width: 600px) {
+      .hero {
+        padding: 2rem;
+      }
+      .timeline__item {
+        grid-template-columns: 1fr;
+      }
+      .hero__badge {
+        justify-content: center;
+      }
+      .roster-card__avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 14px;
+      }
+      .game__grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
   <main>
-    <h1>こんにちわ</h1>
-    <p>このサイトはGitHub Pagesで公開される個人用ページです。ここに簡単な紹介文や最新情報を載せる予定です。</p>
-    <p>ごゆっくりご覧ください。</p>
+    <section class="hero">
+      <div>
+        <div class="hero__badge">
+          <span>Los Angeles Dodgers</span> • 2025 Stars
+        </div>
+        <h1>ドジャースを彩る、投打のスペシャリストたち</h1>
+        <p>大谷翔平を筆頭に投打両方でチームを引っ張るエース候補と、守り・打線の要が混在するロサンゼルスの黄金期。各選手の魅力と今季の活躍をギャラリー形式で紹介します。</p>
+        <a class="hero__cta" href="https://www.dodgers.com" target="_blank" rel="noreferrer noopener">
+          ドジャース公式サイトへ
+        </a>
+      </div>
+      <div>
+        <p class="hero__lead">大谷翔平 | 2025 highlights</p>
+        <div class="panel">
+          <h3>投打で躍動</h3>
+          <p>投手として防御率2.15、打者として.315の打率、25本塁打。トレード後も二刀流の象徴として輝き続ける。</p>
+          <p>MLBオールスター＆シルバースラッガー選出。ドジャースの試合を盛り上げる大黒柱。</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stat">
+        <span>打者</span>
+        <strong>.315</strong>
+        <p>OPS 1.045、25本塁打、84打点を記録</p>
+      </div>
+      <div class="stat">
+        <span>投手</span>
+        <strong>2.15 ERA</strong>
+        <p>154奪三振 / 21登板、完封2回</p>
+      </div>
+      <div class="stat">
+        <span>平均球速</span>
+        <strong>97.8 mph</strong>
+        <p>最速102.3 mph、スプリットのキレが特徴</p>
+      </div>
+    </div>
+
+    <section class="highlights">
+      <h2>注目シーン</h2>
+      <div class="grid">
+        <article class="panel">
+          <h3>サヨナラ三振</h3>
+          <p>史上稀に見るマウンドと打席の両立。8月のジャイアンツ戦では、最後の打者を三振で締めくくり、チームに勝利を呼び込んだ。</p>
+        </article>
+        <article class="panel">
+          <h3>力強い打撃フォーム</h3>
+          <p>下半身を残し、ボールの回転をしっかり拾うスイング。強烈なラインドライブが増える度に、相手投手にプレッシャーを与えている。</p>
+        </article>
+        <article class="panel">
+          <h3>チームの精神的支柱</h3>
+          <p>若手選手へのアドバイス、外国人選手とのコミュニケーションでドジャースらしい連帯感を醸成。</p>
+        </article>
+      </div>
+      <div class="timeline">
+        <div class="timeline__item">
+          <span>2023</span>
+          <p>エンゼルス退団後、FA市場での投打両面での需要がピークを迎え、ドジャースと契約。</p>
+        </div>
+        <div class="timeline__item">
+          <span>2024</span>
+          <p>トラブルなくシーズンを乗り切り、投手としても完投勝利。ファンからの期待はより高まる。</p>
+        </div>
+        <div class="timeline__item">
+          <span>2025</span>
+          <p>ワールドシリーズへ向け、並外れた両輪でヒットと奪三振を量産中。</p>
+        </div>
+      </div>
+    </section>
+    <section class="roster">
+      <article class="roster-card">
+        <div class="roster-card__header">
+          <div class="roster-card__avatar">
+            <img src="images/スクリーンショット 2025-12-12 185307.png" alt="大谷翔平の写真" loading="lazy" width="148" height="148">
+          </div>
+          <div class="roster-card__meta">
+            <span>選手紹介</span>
+            <h3>大谷翔平</h3>
+          </div>
+        </div>
+        <p>最強の「二刀流」。打棒ではパワーヒッター、投げれば平均97mph超の直球と縦のスプリッツで三振を奪う。</p>
+        <p>ファンと地元の両方から愛されるドジャースの顔。</p>
+      </article>
+      <article class="roster-card">
+        <div class="roster-card__header">
+          <div class="roster-card__avatar">
+            <img src="images/スクリーンショット 2025-12-12 190032.png" alt="ムーキー・ベッツの写真" loading="lazy" width="148" height="148">
+          </div>
+          <div class="roster-card__meta">
+            <span>右打者 / 外野</span>
+            <h3>ムーキー・ベッツ</h3>
+          </div>
+        </div>
+        <p>守備範囲と切れ味あるバットコントロールでリードオフ的役割を担う。盗塁の決断力も魅力。</p>
+        <p>走・攻・守のバランスはメジャー随一。</p>
+      </article>
+      <article class="roster-card">
+        <div class="roster-card__header">
+          <div class="roster-card__avatar">
+            <img src="images/スクリーンショット 2025-12-12 190155.png" alt="フレディー・フリーマンの写真" loading="lazy" width="148" height="148">
+          </div>
+          <div class="roster-card__meta">
+            <span>一塁手 / キャプテン</span>
+            <h3>フレディー・フリーマン</h3>
+          </div>
+        </div>
+        <p>クラッチヒットとチームの雰囲気をつくるリーダー。打率と出塁率が安定しており、勝負所で確実に仕事をする。</p>
+        <p>選手間の橋渡し役としても貴重な存在。</p>
+      </article>
+      <article class="roster-card">
+        <div class="roster-card__header">
+          <div class="roster-card__avatar">
+            <img src="images/スクリーンショット 2025-12-12 191130.png" alt="山本由伸の写真" loading="lazy" width="148" height="148">
+          </div>
+          <div class="roster-card__meta">
+            <span>先発右腕</span>
+            <h3>山本由伸</h3>
+          </div>
+        </div>
+        <p>精密なコントロールと鋭い変化球で打者を翻弄する先発投手。試合を組み立てる能力が高い。</p>
+        <p>序盤からテンポ良くストライクを重ね、要所で三振を奪う投球が魅力。</p>
+      </article>
+      <article class="roster-card">
+        <div class="roster-card__header">
+          <div class="roster-card__avatar">
+            <img src="images/スクリーンショット 2025-12-12 191228.png" alt="ウィル・スミスの写真" loading="lazy" width="148" height="148">
+          </div>
+          <div class="roster-card__meta">
+            <span>捕手</span>
+            <h3>ウィル・スミス</h3>
+          </div>
+        </div>
+        <p>投手陣をリードする司令塔。試合の流れを読む配球と、安定した守備でチームを支える。</p>
+        <p>勝負強い打撃で中軸も担える、攻守の要。</p>
+      </article>
+      <article class="roster-card">
+        <div class="roster-card__header">
+          <div class="roster-card__avatar">
+            <img src="images/スクリーンショット 2025-12-12 191328.png" alt="テオスカー・ヘルナンデスの写真" loading="lazy" width="148" height="148">
+          </div>
+          <div class="roster-card__meta">
+            <span>外野手</span>
+            <h3>テオスカー・ヘルナンデス</h3>
+          </div>
+        </div>
+        <p>長打力と勝負強さが武器の外野手。甘い球を逃さない一撃で試合を動かす。</p>
+        <p>打線の厚みを増やし、得点力を底上げする存在。</p>
+      </article>
+    </section>
+
+    <section class="game" aria-label="ミニ野球ゲーム">
+      <h2>ミニ野球ゲーム</h2>
+      <p>ピッチが来たら <strong>スイング</strong>！（ボタン or Space/Enter）。タイミングが合うほど長打になりやすい、簡易ホームランダービーです。</p>
+      <div class="game__grid">
+        <div class="field">
+          <div class="strikezone" id="strikezone" aria-label="ストライクゾーン">
+            <div class="ball" id="ball" aria-hidden="true"></div>
+            <div class="crosshair" aria-hidden="true"></div>
+            <div class="plate" aria-hidden="true"></div>
+          </div>
+          <div class="status" id="status" role="status" aria-live="polite"></div>
+          <div class="hint">コツ：ボールがクロスヘア（十字）付近に来た瞬間にスイング。</div>
+        </div>
+        <div class="hud">
+          <div class="hud__card">
+            <div class="hud__row"><span>スコア</span><strong id="score">0</strong></div>
+            <div class="hud__row"><span>アウト</span><strong id="outs">0</strong></div>
+            <div class="hud__row"><span>残り球数</span><strong id="pitchesLeft">10</strong></div>
+            <div class="hud__row"><span>直近の結果</span><strong id="lastResult">-</strong></div>
+            <div class="timing" aria-label="タイミングゲージ">
+              <div class="timing__sweet" aria-hidden="true"></div>
+              <div class="timing__fill" id="timingFill" aria-hidden="true"></div>
+            </div>
+            <div class="controls">
+              <button class="btn" id="btnPitch" type="button">投げる</button>
+              <button class="btn" id="btnSwing" type="button">スイング</button>
+              <button class="btn btn--ghost" id="btnReset" type="button">リセット</button>
+            </div>
+            <p class="hint">操作：<strong>投げる</strong> → 反応して <strong>スイング</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      フォローしてドジャースと大谷翔平の挑戦を追いかけましょう。&nbsp;※本ページはファン制作の紹介用です。
+    </footer>
   </main>
+  <script>
+    (() => {
+      const ball = document.getElementById("ball");
+      const strikezone = document.getElementById("strikezone");
+      const status = document.getElementById("status");
+      const scoreEl = document.getElementById("score");
+      const outsEl = document.getElementById("outs");
+      const pitchesLeftEl = document.getElementById("pitchesLeft");
+      const lastResultEl = document.getElementById("lastResult");
+      const timingFill = document.getElementById("timingFill");
+      const btnPitch = document.getElementById("btnPitch");
+      const btnSwing = document.getElementById("btnSwing");
+      const btnReset = document.getElementById("btnReset");
+
+      const MAX_PITCHES = 10;
+      const MAX_OUTS = 3;
+      const SWING_WINDOW_MS = 360;
+      const SWEET_SPOT_RATIO = 0.78;
+
+      let score = 0;
+      let outs = 0;
+      let pitchesLeft = MAX_PITCHES;
+      let inFlight = false;
+      let pitchStart = 0;
+      let pitchDuration = 0;
+      let targetY = 0;
+      let targetX = 0;
+      let swingLocked = false;
+      let rafId = null;
+      let cleanupTimer = null;
+
+      function setText(el, value) {
+        el.textContent = String(value);
+      }
+
+      function setStatus(message) {
+        status.textContent = message;
+      }
+
+      function updateHud() {
+        setText(scoreEl, score);
+        setText(outsEl, outs);
+        setText(pitchesLeftEl, pitchesLeft);
+      }
+
+      function setTiming(progress) {
+        if (!timingFill) return;
+        const pct = Math.max(0, Math.min(100, progress * 100));
+        timingFill.style.width = `${pct}%`;
+      }
+
+      function endPitch() {
+        inFlight = false;
+        swingLocked = false;
+        ball.style.opacity = 0;
+        ball.classList.remove("ball--hit", "ball--miss");
+        if (cleanupTimer) window.clearTimeout(cleanupTimer);
+        cleanupTimer = null;
+        setTiming(0);
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        btnPitch.disabled = pitchesLeft <= 0 || outs >= MAX_OUTS;
+      }
+
+      function rand(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function clamp(n, min, max) {
+        return Math.max(min, Math.min(max, n));
+      }
+
+      function renderBall(t) {
+        const elapsed = t - pitchStart;
+        const p = clamp(elapsed / pitchDuration, 0, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+
+        const startX = strikezone.clientWidth / 2;
+        const startY = 18;
+        const x = startX + (targetX - startX) * eased;
+        const y = startY + (targetY - startY) * eased;
+
+        ball.style.opacity = 1;
+        ball.style.left = `${x}px`;
+        ball.style.top = `${y}px`;
+        setTiming(p);
+
+        if (p >= 1) {
+          if (!swingLocked) {
+            outs += 1;
+            setText(lastResultEl, "見逃し（三振）");
+            setStatus("見逃し！アウト。");
+            updateHud();
+          }
+          endPitch();
+          if (outs >= MAX_OUTS || pitchesLeft <= 0) {
+            setStatus("ゲーム終了！リセットで再挑戦。");
+            btnSwing.disabled = true;
+          } else {
+            btnSwing.disabled = false;
+            setStatus("次の投球へ。");
+          }
+          return;
+        }
+
+        rafId = requestAnimationFrame(renderBall);
+      }
+
+      function pitch() {
+        if (inFlight) return;
+        if (pitchesLeft <= 0 || outs >= MAX_OUTS) return;
+
+        pitchesLeft -= 1;
+        updateHud();
+
+        btnPitch.disabled = true;
+        btnSwing.disabled = false;
+        swingLocked = false;
+        inFlight = true;
+        ball.classList.remove("ball--hit", "ball--miss");
+
+        pitchDuration = rand(780, 1180);
+        pitchStart = performance.now();
+
+        const w = strikezone.clientWidth;
+        const h = strikezone.clientHeight;
+        targetX = rand(w * 0.35, w * 0.65);
+        targetY = rand(h * 0.58, h * 0.80);
+
+        setStatus("投球中…！");
+        rafId = requestAnimationFrame(renderBall);
+      }
+
+      function finishWithEffect(effect) {
+        inFlight = false;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        if (cleanupTimer) window.clearTimeout(cleanupTimer);
+        cleanupTimer = window.setTimeout(() => endPitch(), 520);
+        ball.classList.remove("ball--hit", "ball--miss");
+        ball.classList.add(effect);
+        btnPitch.disabled = pitchesLeft <= 0 || outs >= MAX_OUTS;
+      }
+
+      function swing() {
+        if (!inFlight) return;
+        if (swingLocked) return;
+        swingLocked = true;
+
+        const now = performance.now();
+        const ideal = pitchStart + pitchDuration * SWEET_SPOT_RATIO;
+        const diff = Math.abs(now - ideal);
+
+        let result = "";
+        let deltaScore = 0;
+        let effect = "ball--miss";
+
+        if (diff <= SWING_WINDOW_MS * 0.25) {
+          result = "ホームラン！";
+          deltaScore = 4;
+          effect = "ball--hit";
+        } else if (diff <= SWING_WINDOW_MS * 0.5) {
+          result = "長打（ツーベース）";
+          deltaScore = 2;
+          effect = "ball--hit";
+        } else if (diff <= SWING_WINDOW_MS * 0.85) {
+          result = "ヒット（シングル）";
+          deltaScore = 1;
+          effect = "ball--hit";
+        } else {
+          result = "凡打（アウト）";
+          outs += 1;
+        }
+
+        score += deltaScore;
+        setText(lastResultEl, result);
+        updateHud();
+
+        if (deltaScore > 0) {
+          setStatus(`${result} +${deltaScore}点`);
+        } else {
+          setStatus(`${result}`);
+        }
+
+        finishWithEffect(effect);
+
+        if (outs >= MAX_OUTS || pitchesLeft <= 0) {
+          btnSwing.disabled = true;
+          btnPitch.disabled = true;
+          setStatus("ゲーム終了！リセットで再挑戦。");
+        } else {
+          btnSwing.disabled = true;
+          btnPitch.disabled = false;
+        }
+      }
+
+      function reset() {
+        score = 0;
+        outs = 0;
+        pitchesLeft = MAX_PITCHES;
+        setText(lastResultEl, "-");
+        updateHud();
+        endPitch();
+        btnSwing.disabled = true;
+        btnPitch.disabled = false;
+        setStatus("準備OK。投げるを押して開始！");
+      }
+
+      btnPitch.addEventListener("click", pitch);
+      btnSwing.addEventListener("click", swing);
+      btnReset.addEventListener("click", reset);
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          if (inFlight) swing();
+          else pitch();
+        }
+      });
+
+      reset();
+    })();
+  </script>
 </body>
 </html>
